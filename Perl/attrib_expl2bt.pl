@@ -153,7 +153,9 @@ $query = "UPDATE bedrijfsapplicatie, apps_exploitatiedossier
               bedrijfsapplicatie.http = apps_exploitatiedossier.http,
               bedrijfsapplicatie.https = apps_exploitatiedossier.https,
               bedrijfsapplicatie.acm_idm = apps_exploitatiedossier.acm_idm,
-              bedrijfsapplicatie.ad_ldap = apps_exploitatiedossier.ad_ldap
+              bedrijfsapplicatie.ad_ldap = apps_exploitatiedossier.ad_ldap,
+              bedrijfsapplicatie.opslagtype = apps_exploitatiedossier.opslagtype,
+              bedrijfsapplicatie.reverse_proxy = apps_exploitatiedossier.reverse_proxy
 		  WHERE bedrijfsapplicatie.[Nummer bedrijfstoepassing] = apps_exploitatiedossier.bt_nummer";
 if ($dbh->do($query)) {
 	$log->info("Table bedrijfsapplicatie aangevuld");
