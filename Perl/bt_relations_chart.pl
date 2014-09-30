@@ -138,7 +138,9 @@ my $query = "SELECT btnummer1, cb_1.naam as naam1,
 			      [consolidatie bedrijfstoepassingen] as cb_1,
 			      [consolidatie bedrijfstoepassingen] as cb_2
 			 WHERE btnummer1 = cb_1.bt_nummer
-			   AND btnummer2 = cb_2.bt_nummer";
+			   AND btnummer2 = cb_2.bt_nummer
+			   AND (NOT(cb_1.[eigenaar beleidsdomein] = 'Duplicate!'))
+			   AND (NOT(cb_2.[eigenaar beleidsdomein] = 'Duplicate!'))";
 my $ref = do_select($dbh, $query);
 foreach my $arrayhdl (@$ref) {
 	my $btnummer1 = $$arrayhdl{btnummer1};
