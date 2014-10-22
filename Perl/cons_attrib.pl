@@ -126,17 +126,18 @@ $dbh = db_connect("mow_eosl") or exit_application(1);
 
 # Query to update attributen in tabel bedrijfsapplicatie
 my $query = "UPDATE bedrijfsapplicatie, Bedrijfsapplicatie_Prev
-		  SET bedrijfsapplicatie.BereikbaarheidInternet = Bedrijfsapplicatie_Prev.BereikbaarheidInternet,
-              bedrijfsapplicatie.BereikbaarheidInternetVPN = Bedrijfsapplicatie_Prev.BereikbaarheidInternetVPN,
-              bedrijfsapplicatie.BereikbaarheidVoNet = Bedrijfsapplicatie_Prev.BereikbaarheidVoNet,
-              bedrijfsapplicatie.webservices = Bedrijfsapplicatie_Prev.webservices,
-              bedrijfsapplicatie.sftp = Bedrijfsapplicatie_Prev.sftp,
-              bedrijfsapplicatie.http = Bedrijfsapplicatie_Prev.http,
-              bedrijfsapplicatie.https = Bedrijfsapplicatie_Prev.https,
-              bedrijfsapplicatie.acm_idm = Bedrijfsapplicatie_Prev.acm_idm,
-              bedrijfsapplicatie.ad_ldap = Bedrijfsapplicatie_Prev.ad_ldap,
-              bedrijfsapplicatie.opslagtype = Bedrijfsapplicatie_Prev.opslagtype,
-              bedrijfsapplicatie.reverse_proxy = Bedrijfsapplicatie_Prev.reverse_proxy
+		  SET bedrijfsapplicatie.BereikbaarheidInternet = Bedrijfsapplicatie_Prev.BereikbaarheidInternet
+            , bedrijfsapplicatie.BereikbaarheidInternetVPN = Bedrijfsapplicatie_Prev.BereikbaarheidInternetVPN
+			, bedrijfsapplicatie.BereikbaarheidVoNet = Bedrijfsapplicatie_Prev.BereikbaarheidVoNet
+            , bedrijfsapplicatie.webservices = Bedrijfsapplicatie_Prev.webservices
+            , bedrijfsapplicatie.sftp = Bedrijfsapplicatie_Prev.sftp
+            , bedrijfsapplicatie.http = Bedrijfsapplicatie_Prev.http
+            , bedrijfsapplicatie.https = Bedrijfsapplicatie_Prev.https
+            , bedrijfsapplicatie.acm_idm = Bedrijfsapplicatie_Prev.acm_idm
+            , bedrijfsapplicatie.ad_ldap = Bedrijfsapplicatie_Prev.ad_ldap
+            , bedrijfsapplicatie.opslagtype = Bedrijfsapplicatie_Prev.opslagtype
+            , bedrijfsapplicatie.reverse_proxy = Bedrijfsapplicatie_Prev.reverse_proxy
+			, bedrijfsapplicatie.Outofscope_Opmerking = Bedrijfsapplicatie_Prev.Outofscope_Opmerking
 		  WHERE bedrijfsapplicatie.[Nummer bedrijfstoepassing] = Bedrijfsapplicatie_Prev.[Nummer bedrijfstoepassing]";
 if ($dbh->do($query)) {
 	$log->info("Table bedrijfsapplicatie aangevuld");
