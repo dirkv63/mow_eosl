@@ -125,7 +125,7 @@ $log->info("Start application");
 $dbh = db_connect("mow_eosl") or exit_application(1);
 
 # Query to get the attributes
-my $query = "SELECT [Nummer bedrijfstoepassing] as bt_nummer,
+my $query = "SELECT [Nummer bedrijfs toepassing] as bt_nummer,
 					[Bereikbaarheid Internet] as bereikbaarheidInternet,
 					[Bereikbaarheid InternetVPN] as bereikbaarheidInternetVPN,
 					[Bereikbaarheid VoNet] as bereikbaarheidVoNet,
