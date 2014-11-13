@@ -228,6 +228,45 @@ sub go_down($$) {
 	}
 }
 
+sub go_up($$);
+
+sub go_up($$) {
+	my ($cmdb_id, $name) = @_;
+	my $query = "SELECT relation, cmdb_id_source, naam_source, ci_type_source
+				 FROM relations
+				 WHERE cmdb_id_target = ?
+				   AND naam_target    = ?";
+	my $ref = do_select($dbh, $query, ($cmdb_id, $name));
+	foreach my $arrayhdl (@$ref) {
+		my $relation = $$arrayhdl{relation};
+		my $cmdb_id_source = $$arrayhdl{cmdb_id_source};
+		my $naam_source = $$arrayhdl{naam_source};
+		my $ci_type_source = $$arrayhdl{ci_type_source};
+		$log->debug("Relation: $relation - $cmdb_id_source - $naam_source - $ci_type_source");
+		# Check op loops
+		my $edge_attr = edge_attr($relation);
+		my $edge_str = "$cmdb_id_source -> $cmdb_id $edge_attr;\n";
+		my $ci_key = "$cmdb_id_source|$naam_source";
+		if ((defined $no_gebruiksrel) && ($relation eq "maakt gebruik van")) {
+			# Don't look at this relation
+			next;
+		}
+		if (exists $ci_hash{$ci_key}) {
+			print DOT $edge_str;
+		} else {
+			my $edge_attr = edge_attr($relation);
+			my $node_attr = get_node_attr($cmdb_id_source);
+			my $label = "{$naam_source | $cmdb_id_source | $ci_type_source}";
+			print DOT "$cmdb_id_source [shape=record, label=\"{$node_attr}\"];\n";
+			print DOT $edge_str;
+			$ci_hash{$ci_key} = 1;
+			if (not ($relation eq "maakt gebruik van")) {
+				go_up($cmdb_id_source, $naam_source);
+			}
+		}
+	}
+}
+
 ######
 # Main
 ######
@@ -275,7 +314,6 @@ my $query = "SELECT naam, [cmdb id] as cmdb_id
 			 FROM bedrijfsapplicatie";
 my $ref = do_select($dbh, $query);
 foreach my $arrayhdl (@$ref) {
-	undef %ci_hash;
 	my $cmdb_id = $$arrayhdl{cmdb_id};
 	my $name = $$arrayhdl{naam};
 	my $ci_categorie = "";
@@ -296,6 +334,9 @@ foreach my $arrayhdl (@$ref) {
 
 	# Find components from this CI
 	go_down($cmdb_id, $name);
+
+	# Find the hierarchy that depends on this CI
+	go_up($cmdb_id, $name);
 
 	print DOT "}";
 
